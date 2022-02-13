@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {FilterResponseDTO} from '../shared/resources/filter-response-dto';
 import {SeoPhrasesDTO} from '../shared/resources/seo-phrases-dto';
+import {PageParamsDTO} from '../shared/resources/page-params-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ export class MainService extends CoreService {
     super(httpClient);
   }
 
-  getFilterDataByParams(params: { searchType: string; city: string }) {
+  getFilterDataByParams(params: PageParamsDTO) {
     this.post<FilterResponseDTO, { url: string }>(
       `http://server.kilid.org/seo_legacy_api/url/decode/v2.0`,
       {url: `${params.searchType}/${params.city}`},
@@ -33,7 +34,7 @@ export class MainService extends CoreService {
     );
   }
 
-  getSeoPhraseByParams(params: { searchType: String, city: string }) {
+  getSeoPhraseByParams(params: PageParamsDTO) {
     this.post<SeoPhrasesDTO, { url: string }>(
       `http://server.kilid.org/seo_legacy_api/url/seo/v2.0`,
       {url: `${params.searchType}/${params.city}`},

@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {MainService} from '../main.service';
 import {FilterResponseDTO} from '../../shared/resources/filter-response-dto';
 import {SeoPhrasesDTO} from '../../shared/resources/seo-phrases-dto';
+import {PageParamsDTO} from '../../shared/resources/page-params-dto';
 
 @Component({
   selector: 'app-product-list',
@@ -39,12 +40,12 @@ export class ProductListComponent implements OnInit {
     if (this.searchType !== 'buy-apartment' && this.city !== 'tehran') {
       //TODO: redirect to 404 or something similar
     } else {
-      this.mainService.getFilterDataByParams(this.pageParams);
-      this.mainService.getSeoPhraseByParams(this.pageParams);
+      this.mainService.getFilterDataByParams(this.pageParams());
+      this.mainService.getSeoPhraseByParams(this.pageParams());
     }
   }
 
-  get pageParams() {
+  private pageParams(): PageParamsDTO {
     return {searchType: this.searchType, city: this.city};
   }
 
