@@ -5,6 +5,7 @@ import { MainRoutingModule } from './main-routing.module';
 import { ProductListComponent } from './product-list/product-list.component';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {SharedModule} from '../shared/shared.module';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
     MainRoutingModule,
     FormsModule,
     NgbDropdownModule,
+    SharedModule,
   ],
 })
 export class MainModule { }
