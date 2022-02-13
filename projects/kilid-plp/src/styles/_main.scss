@@ -56,6 +56,7 @@
 
 .dropdown-menu {
   right: 0 !important;
+  width: 250px;
 }
 
 .card-ad {
@@ -71,5 +72,20 @@
     min-height: 120px !important;
   }
 
+}
 
+.custom-pill {
+
+  @extend .rounded-pill;
+  @extend .border;
+  @extend .px-2;
+  @extend .py-1;
+  @extend .mr-1;
+  @extend .mb-1;
+  cursor: pointer;
+
+  &--active {
+    @extend .bg-info;
+    @extend .text-white;
+  }
 }

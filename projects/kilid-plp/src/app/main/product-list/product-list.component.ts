@@ -97,7 +97,7 @@ export class ProductListComponent implements OnInit {
   private setFilterResponse(filterResponse: FilterResponseDTO) {
     this.searchStatus = PageStatus.resolved;
     this.filterResponse = filterResponse;
-    this.mainService.getListDataByFilterResponse(this.filterResponse.filters);
+    this.getDataList()
   }
 
   private subscribeToListData() {
@@ -107,9 +107,25 @@ export class ProductListComponent implements OnInit {
     );
   }
 
-  setListData(value: PageableResponseDTO<AdDTO>) {
+  private setListData(value: PageableResponseDTO<AdDTO>) {
     this.listData = value.content;
     this.listStatus = this.PageStatus.resolved;
     console.log('ListData: ', value);
+  }
+
+  togglePropertyType(key: string) {
+    if (this.filterResponse.filters[key]) {
+      delete this.filterResponse.filters[key];
+    } else {
+      this.filterResponse.filters[key] = true;
+    }
+  }
+
+  isPropertySelected(key: string): boolean {
+    return !!this.filterResponse.filters[key];
+  }
+
+  getDataList() {
+    this.mainService.getListDataByFilterResponse(this.filterResponse.filters);
   }
 }

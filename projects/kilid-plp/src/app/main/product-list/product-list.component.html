@@ -14,7 +14,7 @@
 
         <div class="search__item search__item--lg">
           <input type="text" class="form-control form-control--sm"
-                 [value]="Labels.FiltersSubType[filterResponse.filters.subType]">
+                 [value]="filterResponse.filters.locations[0].nameFa">
         </div>
 
         <div class="search__item"
@@ -25,12 +25,33 @@
           </div>
           <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="p-0">
 
-            <div class="p-2">
-              TODO: items
+            <div class="p-2 d-flex flex-wrap w-100">
+
+              <div class="custom-pill"
+                   [class.custom-pill--active]="isPropertySelected('prpApartmentTower')"
+                   (click)="togglePropertyType('prpApartmentTower')">
+                {{Labels.PropertyType['prpApartmentTower']}}
+              </div>
+
+              <div class="custom-pill"
+                   [class.custom-pill--active]="isPropertySelected('prpVillaGarden')"
+                   (click)="togglePropertyType('prpVillaGarden')">
+                {{Labels.PropertyType['prpVillaGarden']}}
+              </div>
+
+              <div class="custom-pill"
+                   [class.custom-pill--active]="isPropertySelected('prpOffice')"
+                   (click)="togglePropertyType('prpOffice')">
+                {{Labels.PropertyType['prpOffice']}}
+              </div>
+
             </div>
 
             <div class="p-2 shadow-sm border-top">
-              <button class="btn btn-sm rounded-pill btn-primary px-4">{{Labels.Buttons.accept}}</button>
+              <button class="btn btn-sm rounded-pill btn-primary px-4"
+                      (click)="getDataList()">
+                {{Labels.Buttons.accept}}
+              </button>
             </div>
 
           </div>
@@ -69,7 +90,7 @@
               <span>{{item.title}}</span>
             </p>
             <p>
-              <span>{{item.price | number}}</span>
+              <span>{{item.price ? (item.price | number) : Labels.General.adaptive}}</span>
             </p>
           </div>
 
