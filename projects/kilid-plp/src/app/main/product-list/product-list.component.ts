@@ -1,14 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {MainService} from '../main.service';
 import {FilterResponseDTO} from '../../shared/resources/filter-response-dto';
 import {SeoPhrasesDTO} from '../../shared/resources/seo-phrases-dto';
 import {PageParamsDTO} from '../../shared/resources/page-params-dto';
-import {Title} from '@angular/platform-browser';
+import {makeStateKey, Title, TransferState} from '@angular/platform-browser';
 import {Labels} from '../../shared/consts/Labels';
 import {PageStatus} from '../../shared/resources/page-status.enum';
 import {AdDTO} from '../../shared/resources/ad-dto';
 import {PageableResponseDTO} from '../../shared/resources/pageable-response-dto';
+import {isPlatformBrowser} from '@angular/common';
+
 
 @Component({
   selector: 'app-product-list',
@@ -34,11 +36,15 @@ export class ProductListComponent implements OnInit {
     return PageStatus;
   }
 
+  renderer: string;
+
   constructor(
     private activatedRouteService: ActivatedRoute,
     private mainService: MainService,
     private titleService: Title,
+    @Inject(PLATFORM_ID) platformId: any,
   ) {
+    this.renderer = isPlatformBrowser(platformId) ? 'Browser' : 'Server';
   }
 
   ngOnInit(): void {
@@ -87,6 +93,13 @@ export class ProductListComponent implements OnInit {
     );
   }
 
+  private subscribeToListData() {
+    this.mainService.listData$.subscribe(
+      value => this.setListData(value),
+      error => console.error('ListData Error: ', error),
+    );
+  }
+
   private setSeoData(seoPhrase: SeoPhrasesDTO) {
     this.seoPhrases = seoPhrase;
     this.titleService.setTitle(this.seoPhrases.title);
@@ -99,17 +112,9 @@ export class ProductListComponent implements OnInit {
     this.getDataList();
   }
 
-  private subscribeToListData() {
-    this.mainService.listData$.subscribe(
-      value => this.setListData(value),
-      error => console.error('ListData Error: ', error),
-    );
-  }
-
   private setListData(value: PageableResponseDTO<AdDTO>) {
     this.listData = value.content.filter(c => c['image'] && c['image'].url && c['title']);
     this.listStatus = this.PageStatus.resolved;
-    console.log('ListData: ', value);
   }
 
   togglePropertyType(key: string) {

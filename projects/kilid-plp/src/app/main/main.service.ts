@@ -8,6 +8,10 @@ import {PageParamsDTO} from '../shared/resources/page-params-dto';
 import {FilterDTO} from '../shared/resources/filter-dto';
 import {AdDTO} from '../shared/resources/ad-dto';
 import {PageableResponseDTO} from '../shared/resources/pageable-response-dto';
+import {makeStateKey, TransferState} from '@angular/platform-browser';
+
+const STATE_KEY_FILTERS = makeStateKey('filters');
+const STATE_KEY_SEO = makeStateKey('seo');
 
 @Injectable({
   providedIn: 'root',
@@ -24,16 +28,24 @@ export class MainService extends CoreService {
   listData$: Subject<any> = new Subject<any>();
   listDataPage: number = 0;
 
-  constructor(httpClient: HttpClient) {
+  constructor(httpClient: HttpClient, private transferState: TransferState) {
     super(httpClient);
   }
 
   getFilterDataByParams(params: PageParamsDTO) {
+    this.filterResponse = this.transferState.get(STATE_KEY_FILTERS, null);
+    console.log('STATE_KEY_FILTERS from state', this.filterResponse);
+    if (this.filterResponse !== null) {
+      this.getCurrentFilterData();
+      return;
+    }
     this.post<FilterResponseDTO, { url: string }>(
       `http://server.kilid.org/seo_legacy_api/url/decode/v2.0`,
       {url: `${params.searchType}/${params.city}`},
     ).subscribe(
       value => {
+        this.transferState.set(STATE_KEY_FILTERS, value);
+        console.log('STATE_KEY_FILTERS http req');
         this.filterResponse = value;
         this.getCurrentFilterData();
       },
@@ -42,11 +54,19 @@ export class MainService extends CoreService {
   }
 
   getSeoPhraseByParams(params: PageParamsDTO) {
+    this.seoPhrase = this.transferState.get(STATE_KEY_SEO, null);
+    console.log('STATE_KEY_SEO from state', this.seoPhrase);
+    if (this.seoPhrase !== null) {
+      this.getCurrentSeoPhrase();
+      return;
+    }
     this.post<SeoPhrasesDTO, { url: string }>(
       `http://server.kilid.org/seo_legacy_api/url/seo/v2.0`,
       {url: `${params.searchType}/${params.city}`},
     ).subscribe(
       value => {
+        this.transferState.set(STATE_KEY_SEO, value);
+        console.log('STATE_KEY_SEO http req');
         this.seoPhrase = value;
         this.getCurrentSeoPhrase();
       },

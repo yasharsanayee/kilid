@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/kilid-plp",
+            "outputPath": "dist/kilid-plp/browser",
             "index": "projects/kilid-plp/src/index.html",
             "main": "projects/kilid-plp/src/main.ts",
             "polyfills": "projects/kilid-plp/src/polyfills.ts",
@@ -102,7 +102,8 @@
             "tsConfig": [
               "projects/kilid-plp/tsconfig.app.json",
               "projects/kilid-plp/tsconfig.spec.json",
-              "projects/kilid-plp/e2e/tsconfig.json"
+              "projects/kilid-plp/e2e/tsconfig.json",
+              "projects/kilid-plp/tsconfig.server.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -119,6 +120,53 @@
             "production": {
               "devServerTarget": "kilid-plp:serve:production"
             }
+          }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/kilid-plp/server",
+            "main": "projects/kilid-plp/server.ts",
+            "tsConfig": "projects/kilid-plp/tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "projects/kilid-plp/src/environments/environment.ts",
+                  "with": "projects/kilid-plp/src/environments/environment.prod.ts"
+                }
+              ],
+              "sourceMap": false,
+              "optimization": true
+            }
+          }
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "options": {
+            "browserTarget": "kilid-plp:build",
+            "serverTarget": "kilid-plp:server"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "kilid-plp:build:production",
+              "serverTarget": "kilid-plp:server:production"
+            }
+          }
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "browserTarget": "kilid-plp:build:production",
+            "serverTarget": "kilid-plp:server:production",
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {}
           }
         }
       }
