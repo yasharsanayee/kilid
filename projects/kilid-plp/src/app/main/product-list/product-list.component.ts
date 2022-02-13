@@ -27,7 +27,6 @@ export class ProductListComponent implements OnInit {
   filterResponse: FilterResponseDTO;
   listData: AdDTO[];
 
-
   searchStatus: PageStatus = PageStatus.loading;
   listStatus: PageStatus = PageStatus.loading;
 
@@ -128,4 +127,10 @@ export class ProductListComponent implements OnInit {
   getDataList() {
     this.mainService.getListDataByFilterResponse(this.filterResponse.filters);
   }
+
+  onScroll() {
+    this.getDataList();
+  }
+
+
 }

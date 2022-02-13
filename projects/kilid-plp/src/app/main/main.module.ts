@@ -6,6 +6,7 @@ import { ProductListComponent } from './product-list/product-list.component';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {SharedModule} from '../shared/shared.module';
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import {SharedModule} from '../shared/shared.module';
     FormsModule,
     NgbDropdownModule,
     SharedModule,
+    InfiniteScrollModule,
   ],
 })
 export class MainModule { }

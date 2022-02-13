@@ -20,8 +20,9 @@ export class MainService extends CoreService {
   seoPhrase: SeoPhrasesDTO = null;
   seoPhrase$: Subject<SeoPhrasesDTO> = new Subject<SeoPhrasesDTO>();
 
-  listData: any;
+  listData: PageableResponseDTO<AdDTO>;
   listData$: Subject<any> = new Subject<any>();
+  listDataPage: number = 0;
 
   constructor(httpClient: HttpClient) {
     super(httpClient);
@@ -55,15 +56,27 @@ export class MainService extends CoreService {
 
   getListDataByFilterResponse(filter: FilterDTO) {
     this.post<PageableResponseDTO<AdDTO>, FilterDTO>(
-      `http://server.kilid.org/api/listing/search/portal/v2.0?sort=date,DESC`,
+      `http://server.kilid.org/api/listing/search/portal/v2.0?sort=date,DESC${this.getListDataPageParam()}`,
       filter,
     ).subscribe(
       value => {
-        this.listData = value;
+        if (!this.listData) {
+          this.listData = value;
+        } else {
+          this.listData.content = [...this.listData.content, ...value.content];
+        }
         this.getCurrentListData();
       },
       error => this.filterResponse$.error(error),
     );
+  }
+
+  private getListDataPageParam(): string {
+    if (this.listData && !this.listData.lastPage) {
+      this.listDataPage++;
+      return `&page=${this.listDataPage}`;
+    }
+    return '';
   }
 
   getCurrentFilterData = () => this.filterResponse$.next(this.filterResponse);
@@ -71,6 +84,5 @@ export class MainService extends CoreService {
   getCurrentSeoPhrase = () => this.seoPhrase$.next(this.seoPhrase);
 
   getCurrentListData = () => this.listData$.next(this.listData);
-
 }
 

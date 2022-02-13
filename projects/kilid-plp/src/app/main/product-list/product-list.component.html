@@ -73,7 +73,12 @@
 <div class="container">
   <app-loader *ngIf="listStatus === PageStatus.loading"></app-loader>
 
-  <div class="row" *ngIf="listStatus === PageStatus.resolved">
+  <div class="row" *ngIf="listStatus === PageStatus.resolved"
+       infiniteScroll
+       [infiniteScrollDistance]="2"
+       [infiniteScrollUpDistance]="1.5"
+       [infiniteScrollThrottle]="150"
+       (scrolled)="onScroll()">
 
     <ng-container *ngFor="let item of listData">
       <div class="col-lg-4">
