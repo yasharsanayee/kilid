@@ -11,8 +11,8 @@ import {PageParamsDTO} from '../shared/resources/page-params-dto';
 })
 export class MainService extends CoreService {
 
-  filterData: FilterResponseDTO = null;
-  filterData$: Subject<FilterResponseDTO> = new Subject<FilterResponseDTO>();
+  filterResponse: FilterResponseDTO = null;
+  filterResponse$: Subject<FilterResponseDTO> = new Subject<FilterResponseDTO>();
 
   seoPhrase: SeoPhrasesDTO = null;
   seoPhrase$: Subject<SeoPhrasesDTO> = new Subject<SeoPhrasesDTO>();
@@ -27,10 +27,10 @@ export class MainService extends CoreService {
       {url: `${params.searchType}/${params.city}`},
     ).subscribe(
       value => {
-        this.filterData = value;
+        this.filterResponse = value;
         this.getCurrentFilterData();
       },
-      error => this.filterData$.error(error),
+      error => this.filterResponse$.error(error),
     );
   }
 
@@ -43,11 +43,11 @@ export class MainService extends CoreService {
         this.seoPhrase = value;
         this.getCurrentSeoPhrase();
       },
-      error => this.filterData$.error(error),
+      error => this.filterResponse$.error(error),
     );
   }
 
-  getCurrentFilterData = () => this.filterData$.next(this.filterData);
+  getCurrentFilterData = () => this.filterResponse$.next(this.filterResponse);
 
   getCurrentSeoPhrase = () => this.seoPhrase$.next(this.seoPhrase);
 

@@ -4,6 +4,7 @@ import {MainService} from '../main.service';
 import {FilterResponseDTO} from '../../shared/resources/filter-response-dto';
 import {SeoPhrasesDTO} from '../../shared/resources/seo-phrases-dto';
 import {PageParamsDTO} from '../../shared/resources/page-params-dto';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-product-list',
@@ -19,49 +20,22 @@ export class ProductListComponent implements OnInit {
   private seoPhrases: SeoPhrasesDTO;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    private activatedRouteService: ActivatedRoute,
     private mainService: MainService,
+    private titleService: Title,
   ) {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(
+    this.activatedRouteService.params.subscribe(
       value => {
         this.searchType = value.searchType;
         this.city = value.city;
         this.paramValidation();
       },
       error => console.error('ActivatedRoute Service Error: ', error));
-    this.subscribeToFilterData();
+    this.subscribeToFilterResponse();
     this.subscribeToSeoPhrase();
-  }
-
-  private subscribeToFilterData() {
-    this.mainService.filterData$.subscribe(
-      value => {
-        this.filterResponse = value;
-        console.log('FilterData: ', value);
-        //TODO: fill search bar
-      },
-      error => {
-        console.error('FilterData Error: ', error);
-        //TODO: error loading search bar
-      },
-    );
-  }
-
-  private subscribeToSeoPhrase() {
-    this.mainService.seoPhrase$.subscribe(
-      value => {
-        this.seoPhrases = value;
-        console.log('SeoPhrase: ', value);
-        //TODO: set SEO data
-      },
-      error => {
-        console.error('SeoPhrase Error: ', error);
-        //TODO: set SEO data
-      },
-    );
   }
 
   private paramValidation() {
@@ -75,6 +49,35 @@ export class ProductListComponent implements OnInit {
 
   private pageParams(): PageParamsDTO {
     return {searchType: this.searchType, city: this.city};
+  }
+
+  private subscribeToFilterResponse() {
+    this.mainService.filterResponse$.subscribe(
+      value => this.setFilterResponse(value),
+      error => {
+        console.error('FilterData Error: ', error);
+        //TODO: error loading search bar
+      },
+    );
+  }
+
+  private subscribeToSeoPhrase() {
+    this.mainService.seoPhrase$.subscribe(
+      value => this.setSeoData(value),
+      error => {
+        console.error('SeoPhrase Error: ', error);
+        //TODO: set SEO data
+      },
+    );
+  }
+
+  private setSeoData(seoPhrase: SeoPhrasesDTO) {
+    this.seoPhrases = seoPhrase;
+    this.titleService.setTitle(this.seoPhrases.title);
+  }
+
+  private setFilterResponse(filterResponse: FilterResponseDTO) {
+    this.filterResponse = filterResponse;
   }
 
 }
