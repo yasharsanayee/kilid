@@ -5,7 +5,7 @@
   <div class="search">
     <div class="container">
 
-      <div class="d-flex">
+      <div class="d-flex" *ngIf="searchStatus === PageStatus.resolved">
 
         <div class="search__item">
           <input type="text" class="form-control form-control--sm"
@@ -23,8 +23,16 @@
                id="dropdownBasic1" ngbDropdownToggle>
             {{Labels.General.propertyType}}
           </div>
-          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-            TODO: type of property
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="p-0">
+
+            <div class="p-2">
+              TODO: items
+            </div>
+
+            <div class="p-2 shadow-sm border-top">
+              <button class="btn btn-sm rounded-pill btn-primary px-4">{{Labels.Buttons.accept}}</button>
+            </div>
+
           </div>
 
         </div>
@@ -42,8 +50,7 @@
 </div>
 
 <div class="container">
+  <app-loader *ngIf="listStatus === PageStatus.loading"></app-loader>
 
-  <app-loader></app-loader>
-
-  <div class="row"></div>
+  <div class="row" *ngIf="listStatus === PageStatus.resolved"></div>
 </div>

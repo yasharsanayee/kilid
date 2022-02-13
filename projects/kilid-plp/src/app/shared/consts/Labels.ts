@@ -5,4 +5,8 @@ export const Labels = {
   FiltersSubType: {
     buy: 'خرید',
   },
+  Buttons: {
+    accept: 'تایید',
+  },
+
 };

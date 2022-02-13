@@ -6,6 +6,7 @@ import {SeoPhrasesDTO} from '../../shared/resources/seo-phrases-dto';
 import {PageParamsDTO} from '../../shared/resources/page-params-dto';
 import {Title} from '@angular/platform-browser';
 import {Labels} from '../../shared/consts/Labels';
+import {PageStatus} from '../../shared/resources/page-status.enum';
 
 @Component({
   selector: 'app-product-list',
@@ -23,6 +24,13 @@ export class ProductListComponent implements OnInit {
 
   filterResponse: FilterResponseDTO;
   private seoPhrases: SeoPhrasesDTO;
+
+  searchStatus: PageStatus = PageStatus.loading;
+  listStatus: PageStatus = PageStatus.loading;
+
+  get PageStatus() {
+    return PageStatus;
+  }
 
   constructor(
     private activatedRouteService: ActivatedRoute,
@@ -83,6 +91,7 @@ export class ProductListComponent implements OnInit {
   }
 
   private setFilterResponse(filterResponse: FilterResponseDTO) {
+    this.searchStatus = PageStatus.resolved;
     this.filterResponse = filterResponse;
   }
 

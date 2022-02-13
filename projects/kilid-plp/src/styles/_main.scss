@@ -21,6 +21,7 @@
   @extend .rounded;
   @extend .shadow-sm;
   padding: $spacer * .5;
+  min-height: $spacer * 2;
 
   &__item {
     position: relative;
@@ -51,4 +52,8 @@
   line-height: 1.5;
   cursor: pointer;
   height: 100%;
+}
+
+.dropdown-menu {
+  right: 0 !important;
 }
