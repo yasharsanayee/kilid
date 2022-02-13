@@ -8,6 +8,7 @@ import {Title} from '@angular/platform-browser';
 import {Labels} from '../../shared/consts/Labels';
 import {PageStatus} from '../../shared/resources/page-status.enum';
 import {AdDTO} from '../../shared/resources/ad-dto';
+import {PageableResponseDTO} from '../../shared/resources/pageable-response-dto';
 
 @Component({
   selector: 'app-product-list',
@@ -106,7 +107,9 @@ export class ProductListComponent implements OnInit {
     );
   }
 
-  setListData(value: any) {
+  setListData(value: PageableResponseDTO<AdDTO>) {
+    this.listData = value.content;
+    this.listStatus = this.PageStatus.resolved;
     console.log('ListData: ', value);
   }
 }
