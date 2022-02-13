@@ -57,3 +57,19 @@
 .dropdown-menu {
   right: 0 !important;
 }
+
+.card-ad {
+
+  @extend .shadow;
+  margin-bottom: $spacer * 2;
+
+  &__img {
+    min-height: 195px;
+  }
+
+  &__body {
+    min-height: 120px !important;
+  }
+
+
+}

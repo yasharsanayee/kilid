@@ -52,5 +52,32 @@
 <div class="container">
   <app-loader *ngIf="listStatus === PageStatus.loading"></app-loader>
 
-  <div class="row" *ngIf="listStatus === PageStatus.resolved"></div>
+  <div class="row" *ngIf="listStatus === PageStatus.resolved">
+
+    <ng-container *ngFor="let item of listData">
+      <div class="col-lg-4">
+
+        <div class="card card-ad">
+
+          <div class="card-img-top card-ad__img">
+            <img class="img-fluid w-100"
+                 [src]="item['image'] && item['image'].url" alt="">
+          </div>
+
+          <div class="card-body card-ad__body">
+            <p>
+              <span>{{item.title}}</span>
+            </p>
+            <p>
+              <span>{{item.price | number}}</span>
+            </p>
+          </div>
+
+        </div>
+
+
+      </div>
+    </ng-container>
+
+  </div>
 </div>
