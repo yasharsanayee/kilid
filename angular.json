@@ -3,5 +3,126 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-  }
+    "kilid-plp": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/kilid-plp",
+      "sourceRoot": "projects/kilid-plp/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/kilid-plp",
+            "index": "projects/kilid-plp/src/index.html",
+            "main": "projects/kilid-plp/src/main.ts",
+            "polyfills": "projects/kilid-plp/src/polyfills.ts",
+            "tsConfig": "projects/kilid-plp/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/kilid-plp/src/favicon.ico",
+              "projects/kilid-plp/src/assets"
+            ],
+            "styles": [
+              "projects/kilid-plp/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/kilid-plp/src/environments/environment.ts",
+                  "with": "projects/kilid-plp/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "kilid-plp:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "kilid-plp:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "kilid-plp:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/kilid-plp/src/test.ts",
+            "polyfills": "projects/kilid-plp/src/polyfills.ts",
+            "tsConfig": "projects/kilid-plp/tsconfig.spec.json",
+            "karmaConfig": "projects/kilid-plp/karma.conf.js",
+            "assets": [
+              "projects/kilid-plp/src/favicon.ico",
+              "projects/kilid-plp/src/assets"
+            ],
+            "styles": [
+              "projects/kilid-plp/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/kilid-plp/tsconfig.app.json",
+              "projects/kilid-plp/tsconfig.spec.json",
+              "projects/kilid-plp/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/kilid-plp/e2e/protractor.conf.js",
+            "devServerTarget": "kilid-plp:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "kilid-plp:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "kilid-plp"
 }
