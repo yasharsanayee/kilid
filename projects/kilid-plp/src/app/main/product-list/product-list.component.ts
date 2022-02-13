@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {MainService} from '../main.service';
+import {FilterResponseDTO} from '../../shared/resources/filter-response-dto';
 
 @Component({
   selector: 'app-product-list',
@@ -11,6 +12,8 @@ export class ProductListComponent implements OnInit {
 
   private searchType: string;
   private city: string;
+
+  private filterResponse: FilterResponseDTO;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -44,15 +47,12 @@ export class ProductListComponent implements OnInit {
   private subscribeToFilterData() {
     this.mainService.filterData$.subscribe(
       value => {
-        console.clear();
+        this.filterResponse = value;
         console.log('FilterData: ', value);
-        debugger
         //TODO: fill search bar
       },
       error => {
-        console.clear();
-        console.log('FilterData Error: ', error);
-        debugger
+        console.error('FilterData Error: ', error);
         //TODO: error loading search bar
       },
     );
