@@ -38,7 +38,23 @@ export class ProductListComponent implements OnInit {
 
   }
 
+  get filterDataParams() {
+    return {searchType: this.searchType, city: this.city};
+  }
+
   private getFilterData() {
-    //TODO: get initial filterData from provided api http://server.kilid.org/seo_legacy_api/url/decode/v2.0
+    this.mainService.getFilterDataByParams(this.filterDataParams)
+      .subscribe(
+        value => {
+          console.clear();
+          console.log('FilterData: ', value);
+          debugger
+        },
+        error => {
+          console.clear();
+          console.log('FilterData Error: ', error);
+          debugger
+        },
+      );
   }
 }
