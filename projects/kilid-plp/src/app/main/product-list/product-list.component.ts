@@ -32,17 +32,19 @@ export class ProductListComponent implements OnInit {
       },
       error => console.error('ActivatedRoute Service Error: ', error));
     this.subscribeToFilterData();
+    this.subscribeToSeoPhrase();
   }
 
   private paramValidation() {
     if (this.searchType !== 'buy-apartment' && this.city !== 'tehran') {
       //TODO: redirect to 404 or something similar
     } else {
-      this.mainService.getFilterDataByParams(this.filterDataParams);
+      this.mainService.getFilterDataByParams(this.pageParams);
+      this.mainService.getSeoPhraseByParams(this.pageParams);
     }
   }
 
-  get filterDataParams() {
+  get pageParams() {
     return {searchType: this.searchType, city: this.city};
   }
 
@@ -60,4 +62,17 @@ export class ProductListComponent implements OnInit {
     );
   }
 
+  private subscribeToSeoPhrase() {
+    this.mainService.seoPhrase$.subscribe(
+      value => {
+        this.seoPhrases = value;
+        console.log('SeoPhrase: ', value);
+        //TODO: set SEO data
+      },
+      error => {
+        console.error('SeoPhrase Error: ', error);
+        //TODO: set SEO data
+      },
+    );
+  }
 }

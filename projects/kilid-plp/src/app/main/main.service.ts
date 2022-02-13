@@ -3,7 +3,7 @@ import {CoreService} from '../shared/service/core/core.service';
 import {HttpClient} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {FilterResponseDTO} from '../shared/resources/filter-response-dto';
-import {FilterResponseSearchDto} from '../shared/resources/filter-response-search-dto';
+import {SeoPhrasesDTO} from '../shared/resources/seo-phrases-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -13,22 +13,41 @@ export class MainService extends CoreService {
   filterData: FilterResponseDTO = null;
   filterData$: Subject<FilterResponseDTO> = new Subject<FilterResponseDTO>();
 
+  seoPhrase: SeoPhrasesDTO = null;
+  seoPhrase$: Subject<SeoPhrasesDTO> = new Subject<SeoPhrasesDTO>();
+
   constructor(httpClient: HttpClient) {
     super(httpClient);
   }
 
-  getFilterDataByParams(param: { searchType: string; city: string }) {
-    this.post<FilterResponseDTO, FilterResponseSearchDto>(
+  getFilterDataByParams(params: { searchType: string; city: string }) {
+    this.post<FilterResponseDTO, { url: string }>(
       `http://server.kilid.org/seo_legacy_api/url/decode/v2.0`,
-      {url: `${param.searchType}/${param.city}`},
+      {url: `${params.searchType}/${params.city}`},
     ).subscribe(
       value => {
         this.filterData = value;
-        this.filterData$.next(this.filterData);
+        this.getCurrentFilterData();
       },
       error => this.filterData$.error(error),
     );
   }
 
+  getSeoPhraseByParams(params: { searchType: String, city: string }) {
+    this.post<SeoPhrasesDTO, { url: string }>(
+      `http://server.kilid.org/seo_legacy_api/url/seo/v2.0`,
+      {url: `${params.searchType}/${params.city}`},
+    ).subscribe(
+      value => {
+        this.seoPhrase = value;
+        this.getCurrentSeoPhrase();
+      },
+      error => this.filterData$.error(error),
+    );
+  }
+
+  getCurrentFilterData = () => this.filterData$.next(this.filterData);
+
+  getCurrentSeoPhrase = () => this.seoPhrase$.next(this.seoPhrase);
 
 }
