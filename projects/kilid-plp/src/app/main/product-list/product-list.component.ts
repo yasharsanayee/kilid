@@ -49,11 +49,13 @@ export class ProductListComponent implements OnInit {
           console.clear();
           console.log('FilterData: ', value);
           debugger
+          //TODO: fill search bar
         },
         error => {
           console.clear();
           console.log('FilterData Error: ', error);
           debugger
+          //TODO: error loading search bar
         },
       );
   }
