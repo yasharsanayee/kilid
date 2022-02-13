@@ -1,9 +1,24 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {CoreService} from '../core/core.service';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class CrudService {
+export abstract class CrudService extends CoreService {
 
-  constructor() { }
+  abstract entityName: string;
+
+  protected constructor(httpClient: HttpClient) {
+    super(httpClient);
+  }
+
+  searchByPost<T, D>(url: string, body: D) {
+    return this.post<T, D>(`${this.entityName}/${url}`, body);
+  }
+
+  getAll<T>(url) {
+    return this.get<T>(`${this.entityName}/${url}`);
+  }
+
 }
