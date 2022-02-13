@@ -7,6 +7,7 @@ import {PageParamsDTO} from '../../shared/resources/page-params-dto';
 import {Title} from '@angular/platform-browser';
 import {Labels} from '../../shared/consts/Labels';
 import {PageStatus} from '../../shared/resources/page-status.enum';
+import {error} from 'protractor';
 
 @Component({
   selector: 'app-product-list',
@@ -49,6 +50,7 @@ export class ProductListComponent implements OnInit {
       error => console.error('ActivatedRoute Service Error: ', error));
     this.subscribeToFilterResponse();
     this.subscribeToSeoPhrase();
+    this.subscribeToListData();
   }
 
   private paramValidation() {
@@ -93,6 +95,17 @@ export class ProductListComponent implements OnInit {
   private setFilterResponse(filterResponse: FilterResponseDTO) {
     this.searchStatus = PageStatus.resolved;
     this.filterResponse = filterResponse;
+    this.mainService.getListDataByFilterResponse(this.filterResponse.filters);
   }
 
+  private subscribeToListData() {
+    this.mainService.listData$.subscribe(
+      value => this.setListData(value),
+      error => console.error('ListData Error: ', error),
+    );
+  }
+
+  setListData(value: any) {
+    console.log('ListData: ', value);
+  }
 }

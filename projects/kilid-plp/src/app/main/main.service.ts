@@ -5,6 +5,7 @@ import {Subject} from 'rxjs';
 import {FilterResponseDTO} from '../shared/resources/filter-response-dto';
 import {SeoPhrasesDTO} from '../shared/resources/seo-phrases-dto';
 import {PageParamsDTO} from '../shared/resources/page-params-dto';
+import {FilterDTO} from '../shared/resources/filter-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,9 @@ export class MainService extends CoreService {
 
   seoPhrase: SeoPhrasesDTO = null;
   seoPhrase$: Subject<SeoPhrasesDTO> = new Subject<SeoPhrasesDTO>();
+
+  listData: any;
+  listData$: Subject<any> = new Subject<any>();
 
   constructor(httpClient: HttpClient) {
     super(httpClient);
@@ -47,8 +51,24 @@ export class MainService extends CoreService {
     );
   }
 
+  getListDataByFilterResponse(filter: FilterDTO) {
+    this.post<any, FilterDTO>(
+      `http://server.kilid.org/api/listing/search/portal/v2.0?sort=date,DESC`,
+      filter,
+    ).subscribe(
+      value => {
+        this.listData = value;
+        this.getCurrentListData();
+      },
+      error => this.filterResponse$.error(error),
+    );
+  }
+
   getCurrentFilterData = () => this.filterResponse$.next(this.filterResponse);
 
   getCurrentSeoPhrase = () => this.seoPhrase$.next(this.seoPhrase);
 
+  getCurrentListData = () => this.listData$.next(this.listData);
+
 }
+
