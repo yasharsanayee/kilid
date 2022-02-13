@@ -6,6 +6,8 @@ import {FilterResponseDTO} from '../shared/resources/filter-response-dto';
 import {SeoPhrasesDTO} from '../shared/resources/seo-phrases-dto';
 import {PageParamsDTO} from '../shared/resources/page-params-dto';
 import {FilterDTO} from '../shared/resources/filter-dto';
+import {AdDTO} from '../shared/resources/ad-dto';
+import {PageableResponseDTO} from '../shared/resources/pageable-response-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -52,7 +54,7 @@ export class MainService extends CoreService {
   }
 
   getListDataByFilterResponse(filter: FilterDTO) {
-    this.post<any, FilterDTO>(
+    this.post<PageableResponseDTO<AdDTO>, FilterDTO>(
       `http://server.kilid.org/api/listing/search/portal/v2.0?sort=date,DESC`,
       filter,
     ).subscribe(

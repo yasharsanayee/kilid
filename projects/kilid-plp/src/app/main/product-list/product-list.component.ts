@@ -7,7 +7,7 @@ import {PageParamsDTO} from '../../shared/resources/page-params-dto';
 import {Title} from '@angular/platform-browser';
 import {Labels} from '../../shared/consts/Labels';
 import {PageStatus} from '../../shared/resources/page-status.enum';
-import {error} from 'protractor';
+import {AdDTO} from '../../shared/resources/ad-dto';
 
 @Component({
   selector: 'app-product-list',
@@ -19,12 +19,13 @@ export class ProductListComponent implements OnInit {
   Labels = Labels;
 
   pageDescription: string;
-
   private searchType: string;
   private city: string;
 
-  filterResponse: FilterResponseDTO;
   private seoPhrases: SeoPhrasesDTO;
+  filterResponse: FilterResponseDTO;
+  listData: AdDTO[];
+
 
   searchStatus: PageStatus = PageStatus.loading;
   listStatus: PageStatus = PageStatus.loading;
