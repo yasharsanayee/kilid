@@ -19,44 +19,43 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params
-      .subscribe(
-        value => {
-          this.searchType = value.searchType;
-          this.city = value.city;
-          this.paramValidation();
-        },
-        error => console.error('ActivatedRoute Service Error: ', error));
+    this.activatedRoute.params.subscribe(
+      value => {
+        this.searchType = value.searchType;
+        this.city = value.city;
+        this.paramValidation();
+      },
+      error => console.error('ActivatedRoute Service Error: ', error));
+    this.subscribeToFilterData();
   }
 
   private paramValidation() {
     if (this.searchType !== 'buy-apartment' && this.city !== 'tehran') {
       //TODO: redirect to 404 or something similar
     } else {
-      this.getFilterData();
+      this.mainService.getFilterDataByParams(this.filterDataParams);
     }
-
   }
 
   get filterDataParams() {
     return {searchType: this.searchType, city: this.city};
   }
 
-  private getFilterData() {
-    this.mainService.getFilterDataByParams(this.filterDataParams)
-      .subscribe(
-        value => {
-          console.clear();
-          console.log('FilterData: ', value);
-          debugger
-          //TODO: fill search bar
-        },
-        error => {
-          console.clear();
-          console.log('FilterData Error: ', error);
-          debugger
-          //TODO: error loading search bar
-        },
-      );
+  private subscribeToFilterData() {
+    this.mainService.filterData$.subscribe(
+      value => {
+        console.clear();
+        console.log('FilterData: ', value);
+        debugger
+        //TODO: fill search bar
+      },
+      error => {
+        console.clear();
+        console.log('FilterData Error: ', error);
+        debugger
+        //TODO: error loading search bar
+      },
+    );
   }
+
 }
