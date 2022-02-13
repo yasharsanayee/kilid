@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {MainService} from '../main.service';
 import {FilterResponseDTO} from '../../shared/resources/filter-response-dto';
+import {SeoPhrasesDTO} from '../../shared/resources/seo-phrases-dto';
 
 @Component({
   selector: 'app-product-list',
@@ -14,6 +15,7 @@ export class ProductListComponent implements OnInit {
   private city: string;
 
   private filterResponse: FilterResponseDTO;
+  private seoPhrases: SeoPhrasesDTO;
 
   constructor(
     private activatedRoute: ActivatedRoute,
