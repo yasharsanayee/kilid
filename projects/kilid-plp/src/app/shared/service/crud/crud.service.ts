@@ -21,4 +21,6 @@ export abstract class CrudService extends CoreService {
     return this.get<T>(`${this.entityName}/${url}`);
   }
 
+  //TODO: other stuff
+
 }
