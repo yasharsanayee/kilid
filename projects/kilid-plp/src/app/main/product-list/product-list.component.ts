@@ -36,19 +36,6 @@ export class ProductListComponent implements OnInit {
     this.subscribeToSeoPhrase();
   }
 
-  private paramValidation() {
-    if (this.searchType !== 'buy-apartment' && this.city !== 'tehran') {
-      //TODO: redirect to 404 or something similar
-    } else {
-      this.mainService.getFilterDataByParams(this.pageParams());
-      this.mainService.getSeoPhraseByParams(this.pageParams());
-    }
-  }
-
-  private pageParams(): PageParamsDTO {
-    return {searchType: this.searchType, city: this.city};
-  }
-
   private subscribeToFilterData() {
     this.mainService.filterData$.subscribe(
       value => {
@@ -76,4 +63,18 @@ export class ProductListComponent implements OnInit {
       },
     );
   }
+
+  private paramValidation() {
+    if (this.searchType !== 'buy-apartment' && this.city !== 'tehran') {
+      //TODO: redirect to 404 or something similar
+    } else {
+      this.mainService.getFilterDataByParams(this.pageParams());
+      this.mainService.getSeoPhraseByParams(this.pageParams());
+    }
+  }
+
+  private pageParams(): PageParamsDTO {
+    return {searchType: this.searchType, city: this.city};
+  }
+
 }
