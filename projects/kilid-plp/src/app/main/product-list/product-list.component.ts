@@ -13,6 +13,8 @@ import {Title} from '@angular/platform-browser';
 })
 export class ProductListComponent implements OnInit {
 
+  pageDescription: string;
+
   private searchType: string;
   private city: string;
 
@@ -74,6 +76,7 @@ export class ProductListComponent implements OnInit {
   private setSeoData(seoPhrase: SeoPhrasesDTO) {
     this.seoPhrases = seoPhrase;
     this.titleService.setTitle(this.seoPhrases.title);
+    this.pageDescription = this.seoPhrases.titleToShow;
   }
 
   private setFilterResponse(filterResponse: FilterResponseDTO) {
