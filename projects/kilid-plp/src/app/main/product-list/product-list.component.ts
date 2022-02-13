@@ -97,7 +97,7 @@ export class ProductListComponent implements OnInit {
   private setFilterResponse(filterResponse: FilterResponseDTO) {
     this.searchStatus = PageStatus.resolved;
     this.filterResponse = filterResponse;
-    this.getDataList()
+    this.getDataList();
   }
 
   private subscribeToListData() {
@@ -108,7 +108,7 @@ export class ProductListComponent implements OnInit {
   }
 
   private setListData(value: PageableResponseDTO<AdDTO>) {
-    this.listData = value.content;
+    this.listData = value.content.filter(c => c['image'] && c['image'].url && c['title']);
     this.listStatus = this.PageStatus.resolved;
     console.log('ListData: ', value);
   }
