@@ -23,6 +23,7 @@
   padding: $spacer * .5;
 
   &__item {
+    position: relative;
     width: 120px;
     margin-left: $spacer * .5;
 
@@ -39,4 +40,14 @@
 
 .form-control--sm {
   height: $spacer * 2;
+}
+
+.fake-input {
+  @extend .form-control--sm;
+  @extend .border;
+  @extend .bg-white;
+  @extend .rounded;
+  padding: $spacer * .25 $spacer * .75;
+  line-height: 1.5;
+  cursor: pointer;
 }

@@ -1,5 +1,7 @@
 export const Labels = {
-  General: {},
+  General: {
+    propertyType: 'نوع ملک',
+  },
   FiltersSubType: {
     buy: 'خرید',
   },
