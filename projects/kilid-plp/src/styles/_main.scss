@@ -7,12 +7,36 @@
 .header {
   display: block;
   width: 100%;
+
+  &__title {
+    font-size: $spacer * 2;
+    text-align: center;
+    margin: $spacer 0;
+  }
+
+}
+
+.search {
   @extend .bg-light;
   @extend .rounded;
   @extend .shadow-sm;
   padding: $spacer * .5;
 
-  &__search {
-    @extend .container;
+  &__item {
+    width: 120px;
+    margin-left: $spacer * .5;
+
+    &--lg {
+      width: 240px;
+    }
+
   }
+}
+
+.form-control {
+  @extend .rounded;
+}
+
+.form-control--sm {
+  height: $spacer * 2;
 }

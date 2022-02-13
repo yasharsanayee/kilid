@@ -1,11 +1,30 @@
 <div class="header">
-  <div class="header__search">
-    search bar
+
+  <div class="header__title">KILID</div>
+
+  <div class="search">
+    <div class="container">
+
+      <div class="d-flex">
+
+        <div class="search__item">
+          <input type="text" class="form-control form-control--sm"
+                 [value]="Labels.FiltersSubType[filterResponse.filters.subType]">
+        </div>
+
+        <div class="search__item search__item--lg">
+          <input type="text" class="form-control form-control--sm"
+                 [value]="Labels.FiltersSubType[filterResponse.filters.subType]">
+        </div>
+
+
+      </div>
+
+    </div>
   </div>
+
 </div>
 
-<br>
-
-<div class="">
+<div class="d-flex justify-content-end">
   <p>{{pageDescription}}</p>
 </div>

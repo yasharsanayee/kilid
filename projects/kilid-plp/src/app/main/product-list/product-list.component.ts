@@ -5,6 +5,7 @@ import {FilterResponseDTO} from '../../shared/resources/filter-response-dto';
 import {SeoPhrasesDTO} from '../../shared/resources/seo-phrases-dto';
 import {PageParamsDTO} from '../../shared/resources/page-params-dto';
 import {Title} from '@angular/platform-browser';
+import {Labels} from '../../shared/consts/Labels';
 
 @Component({
   selector: 'app-product-list',
@@ -13,12 +14,14 @@ import {Title} from '@angular/platform-browser';
 })
 export class ProductListComponent implements OnInit {
 
+  Labels = Labels;
+
   pageDescription: string;
 
   private searchType: string;
   private city: string;
 
-  private filterResponse: FilterResponseDTO;
+  filterResponse: FilterResponseDTO;
   private seoPhrases: SeoPhrasesDTO;
 
   constructor(
