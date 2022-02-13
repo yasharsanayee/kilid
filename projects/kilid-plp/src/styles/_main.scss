@@ -47,7 +47,8 @@
   @extend .border;
   @extend .bg-white;
   @extend .rounded;
-  padding: $spacer * .25 $spacer * .75;
+  padding: $spacer * .375 $spacer * .75;
   line-height: 1.5;
   cursor: pointer;
+  height: 100%;
 }

@@ -17,10 +17,14 @@
                  [value]="Labels.FiltersSubType[filterResponse.filters.subType]">
         </div>
 
-        <div class="search__item">
-
-          <div class="fake-input">
+        <div class="search__item"
+             ngbDropdown>
+          <div class="fake-input"
+               id="dropdownBasic1" ngbDropdownToggle>
             {{Labels.General.propertyType}}
+          </div>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            TODO: type of property
           </div>
 
         </div>
