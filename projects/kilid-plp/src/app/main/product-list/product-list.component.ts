@@ -1,10 +1,10 @@
 import {Component, Inject, OnDestroy, OnInit, PLATFORM_ID} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {MainService} from '../main.service';
 import {FilterResponseDTO} from '../../shared/resources/filter-response-dto';
 import {SeoPhrasesDTO} from '../../shared/resources/seo-phrases-dto';
 import {PageParamsDTO} from '../../shared/resources/page-params-dto';
-import {makeStateKey, Title, TransferState} from '@angular/platform-browser';
+import {Title} from '@angular/platform-browser';
 import {Labels} from '../../shared/consts/Labels';
 import {PageStatus} from '../../shared/resources/page-status.enum';
 import {AdDTO} from '../../shared/resources/ad-dto';
@@ -46,6 +46,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private activatedRouteService: ActivatedRoute,
     private mainService: MainService,
     private titleService: Title,
+    private router: Router,
     @Inject(PLATFORM_ID) platformId: any,
   ) {
     this.isServer = !isPlatformBrowser(platformId);
@@ -73,6 +74,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   private paramValidation() {
     if (this.searchType !== 'buy-apartment' && this.city !== 'tehran') {
       //TODO: redirect to 404 or something similar
+      this.router.navigateByUrl('/404');
     } else {
       this.mainService.getFilterDataByParams(this.pageParams());
       this.mainService.getSeoPhraseByParams(this.pageParams());

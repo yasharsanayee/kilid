@@ -7,6 +7,11 @@ const routes: Routes = [
     path: ':searchType/:city',
     component: ProductListComponent,
   },
+  {
+    path: '**',
+    redirectTo: 'buy-apartment/tehran',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
