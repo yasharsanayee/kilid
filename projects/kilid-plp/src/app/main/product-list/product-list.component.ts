@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, PLATFORM_ID} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {MainService} from '../main.service';
 import {FilterResponseDTO} from '../../shared/resources/filter-response-dto';
@@ -10,6 +10,8 @@ import {PageStatus} from '../../shared/resources/page-status.enum';
 import {AdDTO} from '../../shared/resources/ad-dto';
 import {PageableResponseDTO} from '../../shared/resources/pageable-response-dto';
 import {isPlatformBrowser} from '@angular/common';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 
 @Component({
@@ -17,7 +19,9 @@ import {isPlatformBrowser} from '@angular/common';
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss'],
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnDestroy {
+
+  onDestroy$: Subject<void> = new Subject();
 
   Labels = Labels;
 
@@ -51,13 +55,19 @@ export class ProductListComponent implements OnInit {
     this.subscribeToFilterResponse();
     this.subscribeToSeoPhrase();
     this.subscribeToListData();
-    this.activatedRouteService.params.subscribe(
-      value => {
-        this.searchType = value.searchType;
-        this.city = value.city;
-        this.paramValidation();
-      },
-      error => console.error('ActivatedRoute Service Error:x ', error));
+    this.activatedRouteService.params
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(
+        value => {
+          this.searchType = value.searchType;
+          this.city = value.city;
+          this.paramValidation();
+        },
+        error => console.error('ActivatedRoute Service Error:x ', error));
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
   }
 
   private paramValidation() {
@@ -74,30 +84,36 @@ export class ProductListComponent implements OnInit {
   }
 
   private subscribeToFilterResponse() {
-    this.mainService.filterResponse$.subscribe(
-      value => this.setFilterResponse(value),
-      error => {
-        console.error('FilterData Error: ', error);
-        //TODO: error loading search bar
-      },
-    );
+    this.mainService.filterResponse$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(
+        value => this.setFilterResponse(value),
+        error => {
+          console.error('FilterData Error: ', error);
+          //TODO: error loading search bar
+        },
+      );
   }
 
   private subscribeToSeoPhrase() {
-    this.mainService.seoPhrase$.subscribe(
-      value => this.setSeoData(value),
-      error => {
-        console.error('SeoPhrase Error: ', error);
-        //TODO: set SEO data
-      },
-    );
+    this.mainService.seoPhrase$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(
+        value => this.setSeoData(value),
+        error => {
+          console.error('SeoPhrase Error: ', error);
+          //TODO: set SEO data
+        },
+      );
   }
 
   private subscribeToListData() {
-    this.mainService.listData$.subscribe(
-      value => this.setListData(value),
-      error => console.error('ListData Error: ', error),
-    );
+    this.mainService.listData$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(
+        value => this.setListData(value),
+        error => console.error('ListData Error: ', error),
+      );
   }
 
   private setSeoData(seoPhrase: SeoPhrasesDTO) {
