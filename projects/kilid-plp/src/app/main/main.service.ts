@@ -10,9 +10,6 @@ import {AdDTO} from '../shared/resources/ad-dto';
 import {PageableResponseDTO} from '../shared/resources/pageable-response-dto';
 import {makeStateKey, TransferState} from '@angular/platform-browser';
 
-const STATE_KEY_FILTERS = makeStateKey('filters');
-const STATE_KEY_SEO = makeStateKey('seo');
-
 @Injectable({
   providedIn: 'root',
 })
