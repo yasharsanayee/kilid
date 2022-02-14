@@ -72,8 +72,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   private paramValidation() {
-    if (this.searchType !== 'buy-apartment' && this.city !== 'tehran') {
-      //TODO: redirect to 404 or something similar
+    if (this.searchType !== 'buy-apartment' || this.city !== 'tehran') {
       this.router.navigateByUrl('/404');
     } else {
       this.mainService.getFilterDataByParams(this.pageParams());
