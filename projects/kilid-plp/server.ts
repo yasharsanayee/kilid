@@ -31,12 +31,10 @@ export function app(): express.Express {
 
   // All regular routes use the Universal engine
   server.get('*', (req, res) => {
-    console.log('* urls :) ', req.url);
     res.render(indexHtml, {req, providers: [{provide: APP_BASE_HREF, useValue: req.baseUrl}]});
   });
 
   server.get('/api/**', (req, res) => {
-    console.log('api url: ', req.url);
     res.status(404).send('data requests are not yet supported');
   });
 
