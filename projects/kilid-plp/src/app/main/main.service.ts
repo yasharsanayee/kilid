@@ -10,6 +10,10 @@ import {AdDTO} from '../shared/resources/ad-dto';
 import {PageableResponseDTO} from '../shared/resources/pageable-response-dto';
 import {makeStateKey, TransferState} from '@angular/platform-browser';
 
+const STATE_KEY_FILTERS = makeStateKey('filters');
+const STATE_KEY_SEO = makeStateKey('seo');
+const STATE_KEY_LIST_DATA = makeStateKey('listData');
+
 @Injectable({
   providedIn: 'root',
 })
@@ -25,16 +29,28 @@ export class MainService extends CoreService {
   listData$: Subject<any> = new Subject<any>();
   listDataPage: number = 0;
 
-  constructor(httpClient: HttpClient) {
+  constructor(httpClient: HttpClient, private transferState: TransferState) {
     super(httpClient);
   }
 
   getFilterDataByParams(params: PageParamsDTO) {
+
+    /** preventing duplicate api call in ssr **/
+    if (this.transferState.get(STATE_KEY_FILTERS, null) !== null) {
+      this.filterResponse = this.transferState.get(STATE_KEY_FILTERS, null);
+      this.getCurrentFilterData();
+      return;
+    }
+
     this.post<FilterResponseDTO, { url: string }>(
       `http://server.kilid.org/seo_legacy_api/url/decode/v2.0`,
       {url: `${params.searchType}/${params.city}`},
     ).subscribe(
       value => {
+
+        /** preventing duplicate api call in ssr **/
+        this.transferState.set(STATE_KEY_FILTERS, value);
+
         this.filterResponse = value;
         this.getCurrentFilterData();
       },
@@ -43,11 +59,23 @@ export class MainService extends CoreService {
   }
 
   getSeoPhraseByParams(params: PageParamsDTO) {
+
+    /** preventing duplicate api call in ssr **/
+    if (this.transferState.get(STATE_KEY_SEO, null) !== null) {
+      this.seoPhrase = this.transferState.get(STATE_KEY_SEO, null);
+      this.getCurrentSeoPhrase();
+      return;
+    }
+
     this.post<SeoPhrasesDTO, { url: string }>(
       `http://server.kilid.org/seo_legacy_api/url/seo/v2.0`,
       {url: `${params.searchType}/${params.city}`},
     ).subscribe(
       value => {
+
+        /** preventing duplicate api call in ssr **/
+        this.transferState.set(STATE_KEY_SEO, value);
+
         this.seoPhrase = value;
         this.getCurrentSeoPhrase();
       },
@@ -56,12 +84,27 @@ export class MainService extends CoreService {
   }
 
   getListDataByFilterResponse(filter: FilterDTO) {
+
+    /** preventing duplicate api call in ssr **/
+    if (this.transferState.get(STATE_KEY_LIST_DATA, null) !== null) {
+      this.listData = this.transferState.get(STATE_KEY_LIST_DATA, null);
+      this.getCurrentListData();
+      this.transferState.remove(STATE_KEY_LIST_DATA);
+      return;
+    }
+
     this.post<PageableResponseDTO<AdDTO>, FilterDTO>(
       `http://server.kilid.org/api/listing/search/portal/v2.0?sort=date,DESC${this.getListDataPageParam()}`,
       filter,
     ).subscribe(
       value => {
         if (!this.listData) {
+
+          if (this.listDataPage === 0) {
+            /** preventing duplicate api call in ssr **/
+            this.transferState.set(STATE_KEY_LIST_DATA, value);
+          }
+
           this.listData = value;
         } else {
           this.listData.content = [...this.listData.content, ...value.content];

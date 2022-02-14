@@ -48,16 +48,16 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.subscribeToFilterResponse();
+    this.subscribeToSeoPhrase();
+    this.subscribeToListData();
     this.activatedRouteService.params.subscribe(
       value => {
         this.searchType = value.searchType;
         this.city = value.city;
         this.paramValidation();
       },
-      error => console.error('ActivatedRoute Service Error: ', error));
-    this.subscribeToFilterResponse();
-    this.subscribeToSeoPhrase();
-    this.subscribeToListData();
+      error => console.error('ActivatedRoute Service Error:x ', error));
   }
 
   private paramValidation() {
@@ -109,9 +109,9 @@ export class ProductListComponent implements OnInit {
   private setFilterResponse(filterResponse: FilterResponseDTO) {
     this.searchStatus = PageStatus.resolved;
     this.filterResponse = filterResponse;
-    if (!this.isServer) {
-      this.getDataList();
-    }
+    // if (!this.isServer) {
+    this.getDataList();
+    // }
   }
 
   private setListData(value: PageableResponseDTO<AdDTO>) {
