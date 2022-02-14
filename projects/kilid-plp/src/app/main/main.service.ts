@@ -28,24 +28,16 @@ export class MainService extends CoreService {
   listData$: Subject<any> = new Subject<any>();
   listDataPage: number = 0;
 
-  constructor(httpClient: HttpClient, private transferState: TransferState) {
+  constructor(httpClient: HttpClient) {
     super(httpClient);
   }
 
   getFilterDataByParams(params: PageParamsDTO) {
-    this.filterResponse = this.transferState.get(STATE_KEY_FILTERS, null);
-    console.log('STATE_KEY_FILTERS from state', this.filterResponse);
-    if (this.filterResponse !== null) {
-      this.getCurrentFilterData();
-      return;
-    }
     this.post<FilterResponseDTO, { url: string }>(
       `http://server.kilid.org/seo_legacy_api/url/decode/v2.0`,
       {url: `${params.searchType}/${params.city}`},
     ).subscribe(
       value => {
-        this.transferState.set(STATE_KEY_FILTERS, value);
-        console.log('STATE_KEY_FILTERS http req');
         this.filterResponse = value;
         this.getCurrentFilterData();
       },
@@ -54,19 +46,11 @@ export class MainService extends CoreService {
   }
 
   getSeoPhraseByParams(params: PageParamsDTO) {
-    this.seoPhrase = this.transferState.get(STATE_KEY_SEO, null);
-    console.log('STATE_KEY_SEO from state', this.seoPhrase);
-    if (this.seoPhrase !== null) {
-      this.getCurrentSeoPhrase();
-      return;
-    }
     this.post<SeoPhrasesDTO, { url: string }>(
       `http://server.kilid.org/seo_legacy_api/url/seo/v2.0`,
       {url: `${params.searchType}/${params.city}`},
     ).subscribe(
       value => {
-        this.transferState.set(STATE_KEY_SEO, value);
-        console.log('STATE_KEY_SEO http req');
         this.seoPhrase = value;
         this.getCurrentSeoPhrase();
       },

@@ -36,7 +36,7 @@ export class ProductListComponent implements OnInit {
     return PageStatus;
   }
 
-  renderer: string;
+  isServer: boolean;
 
   constructor(
     private activatedRouteService: ActivatedRoute,
@@ -44,7 +44,7 @@ export class ProductListComponent implements OnInit {
     private titleService: Title,
     @Inject(PLATFORM_ID) platformId: any,
   ) {
-    this.renderer = isPlatformBrowser(platformId) ? 'Browser' : 'Server';
+    this.isServer = !isPlatformBrowser(platformId);
   }
 
   ngOnInit(): void {
@@ -109,7 +109,9 @@ export class ProductListComponent implements OnInit {
   private setFilterResponse(filterResponse: FilterResponseDTO) {
     this.searchStatus = PageStatus.resolved;
     this.filterResponse = filterResponse;
-    this.getDataList();
+    if (!this.isServer) {
+      this.getDataList();
+    }
   }
 
   private setListData(value: PageableResponseDTO<AdDTO>) {
